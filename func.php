@@ -8,7 +8,7 @@ if (isset($_POST['add'])) {
     $e = $func->checkEmail($_POST['mail']);
     $p = $func->checkPhone($_POST['phone']);
     if ($e && $p) {
-        if ($func->add($crypt->encodeEmail($e), $crypt->encode($p))) {
+        if ($func->add($crypt->encodeEmail($e), $crypt->encode($p, $crypt->getKey($crypt->encodeEmail($e))))) {
             $mes = $func->success("saved successfully");
         } else {
             $mes .= $func->error("email exists");
@@ -27,7 +27,7 @@ if (isset($_POST['retrieve'])) {
     if ($e) {
         $p = $func->retrieve($crypt->encodeEmail($e));
         if ($p) {
-            $p = $crypt->decode($p);
+            $p = $crypt->decode($p, $crypt->getKey($crypt->encodeEmail($e)));
 
             //echo $p;
             $to = $e;
